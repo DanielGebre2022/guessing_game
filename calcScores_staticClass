@@ -1,0 +1,29 @@
+package com.Dan;
+
+public class scoreCalc {
+
+    public static double totScore (double[] total) {
+        double totalNum = 0;
+        for (double num : total) {
+            totalNum += num;
+        }
+        return totalNum;
+    }
+    public static double avgScore (int a, int b){
+        double totScore = (double) a;
+        double gameCt = (double) b;
+        double average = totScore / (gameCt + 1.0);
+        return average;
+    }
+
+    public static int hiScore (int[] high) {
+        int highScore = 0;
+        for (int score : high){
+            if (score > highScore){
+                highScore = score;
+            }
+
+        }
+        return highScore;
+    }
+}
