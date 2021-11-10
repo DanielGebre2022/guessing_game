@@ -1,0 +1,276 @@
+package com.Dan;
+import java.util.Random;
+import java.util.stream.*;
+import java.util.function.Function;
+
+import java.util.Arrays;
+import java.util.Scanner;
+import java.util.Set;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Random rand = new Random();
+        int topOfRange = 1001;
+        int secretNum = rand.nextInt(topOfRange);
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Pick a number between 1-1000. You have 10 guesses so choose wisely:");
+        int guess = scan.nextInt();
+        int guessLimit = 10;
+        String replay;
+        String replayPrompt = "Want to play again? Y/N";
+        int gameCount = 0;
+        int totalScore = 0;
+        int[] scores = new int[20];
+        int highScore = 0;
+        String printScores = " Here are your recent scores: ";
+        String[] lastGuess = new String[] {"this is your last guess make it good...", "uh oh one more guess", "it's now or never, last chance", "Psst.. its your last try..", "Choose wisely its your last attempt"};
+        String[] lowGuess = new String[] {"That guess was too low", "good guess but too low", "The secret number is higher than that", "The number you guessed was too small", "Keep guessing, youre guess was too low"};
+        String[] highGuess = new String[] {"Your guess was high", "The number is lower than that", "Not a bad try but that guess was too high", "Reduce your guess because the secret number is less", "Your guess is higher than the secret number"};
+        String[] closeLoss = new String[] {"Oh so close ", "Close but no cigar ", "almost had it... ", "missed it by a whisker ", "one more guess and you would have had it "};
+        String[] badLoss = new String[] {"You were off by quite a bit", "Sheesh you weren't even close", "I know you can do better than that", "Looks like you need some practice", "Not the WORST ive seen but...." };
+        String[] goodWin = new String[] {"Wow! you are a natural!", "You must have Psychic powers!!", "Better to be lucky than good!!", "Great Game!!", "Impressive!! Your'e really good at this"};
+        String[] avgWin = new String[]  {"Not bad at all", "You're getting the hang of this", "Keep up the good work and soon you'll be a pro", "Pretty good", "Nice"};
+        String[] closeWin = new String[] {"Whew... That was close", "I didn't think you could do it but...", "How'd you pull that one off?!", "Last second shot for the win!!!", "Whether by an inch or a mile a win is a win"};
+        for (int i = 0; guessLimit > 0; guessLimit--) {
+            if (guess != secretNum) {
+                if (guessLimit > 1) {
+                    if (guess > secretNum) {
+                        Random hiGuess = new Random();
+                        int hiComment = hiGuess.nextInt(5);
+                        System.out.println(highGuess[hiComment]);
+                    }
+                    if (guess < secretNum) {
+                        Random loGuess = new Random();
+                        int loComment = loGuess.nextInt(5);
+                        System.out.println(lowGuess[loComment]);
+                    }
+
+                }
+
+                if (guessLimit == 1) {
+                    guessLimit = 0;
+                    scores[gameCount] = 0;
+                    System.out.println(Comments.gameComment(closeLoss) + " The number was " + secretNum + ". You're current score is " + guessLimit + ".");
+                    System.out.println(replayPrompt);
+                    replay = scan.next();
+                    if (!replay.equals("Y") && !replay.equals("y") && !replay.equals("Yes") && !replay.equals("yes") && !replay.equals("N") && !replay.equals("n") && !replay.equals("no") && !replay.equals("NO")) {
+                        System.out.println("I dont understand you?? do you want to play again? Y/N ?? Or type anything else to quit  ");
+                        replay = scan.next();
+                        if (!replay.equals("Y") && !replay.equals("y") && !replay.equals("Yes") && !replay.equals("yes") && !replay.equals("N") && !replay.equals("n") && !replay.equals("no") && !replay.equals("NO")) {
+                            System.out.println("Well it was fun whie it lasted. Goodbye!!");
+                            System.exit(0);
+                        }
+                    }
+                    if (replay.equals("Y") || replay.equals("y") || replay.equals("Yes") || replay.equals("yes")) {
+                        scores[gameCount] = guessLimit;
+                        System.out.print("Ok here are your most recent scores:  ");
+                        for (int x = 0; x <= gameCount; x++) {
+                            System.out.print(scores[x] + ",");
+                        }
+                        System.out.println();
+                        System.out.println();
+                        for (int y = 0; y <= gameCount; y++) {
+                            totalScore += scores[y];
+                        }
+                        System.out.println("You have an average score 0f: " + scoreCalc.avgScore(totalScore, gameCount) );
+                        System.out.println();
+                        System.out.println("And a High Score of: " + scoreCalc.hiScore(scores));
+                        System.out.println();
+                        gameCount++;
+                        secretNum = rand.nextInt(topOfRange);
+                        guessLimit = 10;
+                        System.out.println("Ok guess again...");
+                    }
+                    if (replay.equals("N") || replay.equals("n") || replay.equals("no") || replay.equals("NO")) {
+                        scores[gameCount] = guessLimit;
+                        System.out.print("Ok here are your most recent scores  ");
+                        for (int x = 0; x <= gameCount; x++) {
+                            System.out.print(scores[x] + ", ");
+                        }
+                        System.out.println();
+                        System.out.println();
+                        for (int y = 0; y <= gameCount; y++) {
+                            totalScore += scores[y];
+                        }
+                        System.out.println("You have an average score 0f: " + scoreCalc.avgScore(totalScore, gameCount) );
+                        System.out.println("And a High Score of: " + scoreCalc.hiScore(scores));
+                        System.out.println("Goodbye!");
+                        System.exit(0);
+
+
+                    }
+                }
+                if (guessLimit == 2) {
+                    Random randA = new Random();
+                    int randcmtA = randA.nextInt(5);
+                    System.out.println(lastGuess[randcmtA]);
+
+                }
+
+            }
+
+            if (guess == secretNum) {
+                totalScore = 0;
+                scores[gameCount] = guessLimit;
+                if (guessLimit >= 7) {
+                    System.out.println(Comments.gameComment(goodWin) + " The secret number was " + secretNum + ". You're current score is " + guessLimit +".");
+                    System.out.println(replayPrompt);
+                    replay = scan.next();
+                    if (!replay.equals("Y") && !replay.equals("y") && !replay.equals("Yes") && !replay.equals("yes") && !replay.equals("N") && !replay.equals("n") && !replay.equals("no") && !replay.equals("NO")) {
+                        System.out.println("I dont understand you?? do you want to play again? Y/N ?? Or type anything else to quit  ");
+                        replay = scan.next();
+                        if (!replay.equals("Y") && !replay.equals("y") && !replay.equals("Yes") && !replay.equals("yes") && !replay.equals("N") && !replay.equals("n") && !replay.equals("no") && !replay.equals("NO")) {
+                            System.out.println("Well it was fun whie it lasted. Goodbye!!");
+                            System.exit(0);
+                        }
+                    }
+                    if (replay.equals("Y") || replay.equals("y") || replay.equals("Yes") || replay.equals("yes")) {
+                        scores[gameCount] = guessLimit;
+                        System.out.print("Ok here are your most recent scores:  ");
+                        for (int x = 0; x <= gameCount; x++) {
+                            System.out.print(scores[x] + ", ");
+                        }
+                        System.out.println();
+                        System.out.println();
+                        for (int y = 0; y <= gameCount; y++) {
+                            totalScore += scores[y];
+                        }
+                        System.out.println("You have an average score 0f: " + scoreCalc.avgScore(totalScore, gameCount) );
+                        System.out.println();
+                        System.out.println("And a High Score of: " + scoreCalc.hiScore(scores));
+                        System.out.println();
+                        gameCount++;
+                        secretNum = rand.nextInt(topOfRange);
+                        guessLimit = 10;
+                        System.out.println("Ok guess again...");
+                    }
+
+                    if (replay.equals("N") || replay.equals("n") || replay.equals("no") || replay.equals("NO")) {
+                        scores[gameCount] = guessLimit;
+                        System.out.print("Ok here are your most recent scores  ");
+                        for (int x = 0; x <= gameCount; x++) {
+                            System.out.print(scores[x] + ", ");
+                        }
+                        System.out.println();
+                        for (int y = 0; y <= gameCount; y++) {
+                            totalScore += scores[y];
+                        }
+                        System.out.println("You have an average score 0f: " + scoreCalc.avgScore(totalScore, gameCount) );
+                        System.out.println("And a High Score of: " + scoreCalc.hiScore(scores));
+                        System.out.println("Goodbye!");
+                        System.exit(0);
+
+
+                    }
+                }
+                if (guessLimit >= 3 && guessLimit < 7) {
+                    System.out.println(Comments.gameComment(avgWin) + " The secret number was " + secretNum + ". You're current score is " + guessLimit + ".");
+                    System.out.println(replayPrompt);
+                    replay = scan.next();
+                    if (!replay.equals("Y") && !replay.equals("y") && !replay.equals("Yes") && !replay.equals("yes") && !replay.equals("N") && !replay.equals("n") && !replay.equals("no") && !replay.equals("NO")) {
+                        System.out.println("I dont understand you?? do you want to play again? Y/N ?? Or type anything else to quit  ");
+                        replay = scan.next();
+                        if (!replay.equals("Y") && !replay.equals("y") && !replay.equals("Yes") && !replay.equals("yes") && !replay.equals("N") && !replay.equals("n") && !replay.equals("no") && !replay.equals("NO")) {
+                            System.out.println("Well it was fun whie it lasted. Goodbye!!");
+                            System.exit(0);
+                        }
+                    }
+                    if (replay.equals("Y") || replay.equals("y") || replay.equals("Yes") || replay.equals("yes")) {
+                        scores[gameCount] = guessLimit;
+                        System.out.print("Ok here are your most recent scores:  ");
+                        for (int x = 0; x <= gameCount; x++) {
+                            System.out.print(scores[x] + ", ");
+                        }
+                        System.out.println();
+                        System.out.println();
+                        for (int y = 0; y <= gameCount; y++) {
+                            totalScore += scores[y];
+                        }
+                        System.out.println("You have an average score 0f: " + scoreCalc.avgScore(totalScore, gameCount) );
+                        System.out.println();
+                        System.out.println("And a High Score of: " + scoreCalc.hiScore(scores));
+                        System.out.println();
+                        gameCount++;
+                        secretNum = rand.nextInt(topOfRange);
+                        guessLimit = 10;
+                        System.out.println("Ok guess again...");
+                    }
+                    if (replay.equals("N") || replay.equals("n") || replay.equals("no") || replay.equals("NO")) {
+                        scores[gameCount] = guessLimit;
+                        System.out.print("Ok here are your most recent scores  ");
+                        for (int x = 0; x <= gameCount; x++) {
+                            System.out.print(scores[x] + ", ");
+                        }
+                        System.out.println();
+                        System.out.println();
+                        for (int y = 0; y <= gameCount; y++) {
+                            totalScore += scores[y];
+                        }
+                        System.out.println("You have an average score 0f: " + scoreCalc.avgScore(totalScore, gameCount) );
+                        System.out.println("And a High Score of: " + scoreCalc.hiScore(scores));
+                        System.out.println("Goodbye!");
+                        System.exit(0);
+
+
+                    }
+                }
+
+                if (guessLimit == 1 || guessLimit == 2) {
+                    System.out.println(Comments.gameComment(closeWin) + " The secret number was " + secretNum + ". You're current score is " + guessLimit + ".");
+                    System.out.println(replayPrompt);
+                    replay = scan.next();
+                    if (!replay.equals("Y") && !replay.equals("y") && !replay.equals("Yes") && !replay.equals("yes") && !replay.equals("N") && !replay.equals("n") && !replay.equals("no") && !replay.equals("NO")) {
+                        System.out.println("I dont understand you?? do you want to play again? Y/N ?? Or type anything else to quit  ");
+                        replay = scan.next();
+                        if (!replay.equals("Y") && !replay.equals("y") && !replay.equals("Yes") && !replay.equals("yes") && !replay.equals("N") && !replay.equals("n") && !replay.equals("no") && !replay.equals("NO")) {
+                            System.out.println("Well it was fun whie it lasted. Goodbye!!");
+                            System.exit(0);
+                        }
+                    }
+                    if (replay.equals("Y") || replay.equals("y") || replay.equals("Yes") || replay.equals("yes")) {
+                        scores[gameCount] = guessLimit;
+                        System.out.print("Ok here are your most recent scores:  ");
+                        for (int x = 0; x <= gameCount; x++) {
+                            System.out.print(scores[x] + ", ");
+                        }
+                        System.out.println();
+                        System.out.println();
+                        for (int y = 0; y <= gameCount; y++) {
+                            totalScore += scores[y];
+                        }
+                        System.out.println("You have an average score 0f: " + scoreCalc.avgScore(totalScore, gameCount) );
+                        System.out.println();
+                        System.out.println("And a High Score of: " + scoreCalc.hiScore(scores));
+                        System.out.println();
+                        gameCount++;
+                        secretNum = rand.nextInt(topOfRange);
+                        guessLimit = 10;
+                        System.out.println("Ok guess again...");
+                    }
+                    if (replay.equals("N") || replay.equals("n") || replay.equals("no") || replay.equals("NO")) {
+                        scores[gameCount] = guessLimit;
+                        System.out.print("Ok here are your most recent scores  ");
+                        for (int x = 0; x <= gameCount; x++) {
+                            System.out.print(scores[x] + ", ");
+                        }
+                        System.out.println();
+                        System.out.println();
+                        for (int y = 0; y <= gameCount; y++) {
+                            totalScore += scores[y];
+                        }
+                        System.out.println("You have an average score 0f: " + scoreCalc.avgScore(totalScore, gameCount) );
+                        System.out.println("And a High Score of: " + scoreCalc.hiScore(scores));
+                        System.out.println("Goodbye!");
+                        System.exit(0);
+
+
+                    }
+
+                }
+            }
+            guess = scan.nextInt();
+        }
+    }
+}
+
