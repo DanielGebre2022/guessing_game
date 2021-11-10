@@ -1,0 +1,11 @@
+package com.Dan;
+
+import java.util.Random;
+
+public class Comments {
+    public static String gameComment(String[] Input) {
+        Random rand = new Random();
+        int randnum = rand.nextInt(5);
+        return Input[randnum];
+    }
+}
