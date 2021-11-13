@@ -1,11 +1,70 @@
 package com.Dan;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class Comments {
-    public static String gameComment(String[] Input) {
+
+
+    public String goodWinCmt() {
+        String[] goodWin = new String[]{"Wow! you are a natural!", "You must have Psychic powers!!", "Better to be lucky than good!!", "Great Game!!", "Impressive!! Your'e really good at this"};
         Random rand = new Random();
         int randnum = rand.nextInt(5);
-        return Input[randnum];
+        String str = goodWin[randnum];
+        return str;
+    }
+
+    public String closeLossCmt() {
+        String[] closeLoss = new String[]{"Oh so close ", "Close but no cigar ", "almost had it... ", "missed it by a whisker ", "one more guess and you would have had it "};
+        Random rand = new Random();
+        int randnum = rand.nextInt(5);
+        String str = closeLoss[randnum];
+        return str;
+    }
+
+    public String lastGuessCmt() {
+        String[] lastGuess = new String[]{"this is your last guess make it good...", "uh oh one more guess", "it's now or never, last chance", "Psst.. its your last try..", "Choose wisely its your last attempt"};
+        Random rand = new Random();
+        int randnum = rand.nextInt(5);
+        String str = lastGuess[randnum];
+        return str;
+    }
+
+    public String lowGuessCmt() {
+        String[] lowGuess = new String[]{"That guess was too low", "good guess but too low", "The secret number is higher than that", "The number you guessed was too small", "Keep guessing, youre guess was too low"};
+        Random rand = new Random();
+        int randnum = rand.nextInt(5);
+        return lowGuess[randnum];
+    }
+
+    public String highGuessCmt() {
+        String[] highGuess = new String[]{"Your guess was high", "The number is lower than that", "Not a bad try but that guess was too high", "Reduce your guess because the secret number is less", "Your guess is higher than the secret number"};
+        Random rand = new Random();
+        int randnum = rand.nextInt(5);
+        return highGuess[randnum];
+    }
+
+    public String avgWinCmt() {
+        String[] avgWin = new String[]{"Not bad at all", "You're getting the hang of this", "Keep up the good work and soon you'll be a pro", "Pretty good", "Nice"};
+        Random rand = new Random();
+        int randnum = rand.nextInt(5);
+        String str = avgWin[randnum];
+        return str;
+    }
+
+    public String closeWinCmt() {
+        String[] closeWin = new String[]{"Whew... That was close", "I didn't think you could do it but...", "How'd you pull that one off?!", "Last second shot for the win!!!", "Whether by an inch or a mile a win is a win"};
+        Random rand = new Random();
+        int randnum = rand.nextInt(5);
+        String str = closeWin[randnum];
+        return str;
+    }
+
+    public String badLossCmt() {
+        String[] badLoss = new String[]{"You were off by quite a bit", "Sheesh you weren't even close", "I know you can do better than that", "Looks like you need some practice", "Not the WORST ive seen but...."};
+        Random rand = new Random();
+        int randnum = rand.nextInt(5);
+        String str = badLoss[randnum];
+        return str;
     }
 }
